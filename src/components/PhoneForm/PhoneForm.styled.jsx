@@ -7,6 +7,8 @@ export const PhoneForm = styled.form`
   align-items: center;
   gap: 20px;
   padding: 8px;
+
+  font-family: cursive;
 `;
 
 export const FormLabel = styled.label`
