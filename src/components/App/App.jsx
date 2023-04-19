@@ -14,6 +14,21 @@ class App extends Component {
     filter: '',
   };
 
+  componentDidMount() {
+    const contacts = localStorage.getItem('contacts');
+    const pasredContacts = JSON.parse(contacts);
+
+    if (pasredContacts) {
+      this.setState({ contacts: pasredContacts });
+    }
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (this.state.contacts !== prevState.contacts) {
+      localStorage.setItem('contacts', JSON.stringify(this.state.contacts));
+    }
+  }
+
   addContact = value => {
     for (const contact of this.state.contacts) {
       if (value.name === contact.name) {
@@ -23,7 +38,7 @@ class App extends Component {
       }
     }
     this.setState(prevState => ({
-      contacts: [{ ...value, id: nanoid() }, ...prevState.contacts],
+      contacts: [{ id: nanoid(), ...value }, ...prevState.contacts],
     }));
     Notiflix.Notify.success(
       'You have added a new contact to your contact list'
@@ -34,7 +49,6 @@ class App extends Component {
     this.setState(prevState => ({
       contacts: prevState.contacts.filter(contact => contact.id !== contactId),
     }));
-    console.log(contactId);
   };
 
   onChangeFind = e => {
